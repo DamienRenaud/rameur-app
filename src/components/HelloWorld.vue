@@ -3,140 +3,116 @@
     <v-layout
       text-center
       wrap
+      class="mt-5"
     >
-      <v-flex xs12>
-        <v-img
-          :src="require('../assets/logo.svg')"
-          class="my-3"
-          contain
-          height="200"
-        ></v-img>
-      </v-flex>
-
-      <v-flex mb-4>
-        <h1 class="display-2 font-weight-bold mb-3">
-          Welcome to Vuetify
-        </h1>
-        <p class="subheading font-weight-regular">
-          For help and collaboration with other Vuetify developers,
-          <br>please join our online
-          <a href="https://community.vuetifyjs.com" target="_blank">Discord Community</a>
-        </p>
-      </v-flex>
+      <FormRameur v-on:newRameur="addRameur"/>
 
       <v-flex
         mb-5
-        xs12
+        xm12
       >
-        <h2 class="headline font-weight-bold mb-3">What's next?</h2>
-
-        <v-layout justify-center>
-          <a
-            v-for="(next, i) in whatsNext"
-            :key="i"
-            :href="next.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ next.text }}
-          </a>
-        </v-layout>
+        <h1 class="headline font-weight-bold mb-3">Classement des rameurs</h1>
       </v-flex>
-
-      <v-flex
-        xs12
-        mb-5
-      >
-        <h2 class="headline font-weight-bold mb-3">Important Links</h2>
-
-        <v-layout justify-center>
-          <a
-            v-for="(link, i) in importantLinks"
-            :key="i"
-            :href="link.href"
-            class="subheading mx-3"
-            target="_blank"
+      <v-flex mb-5 xs12>
+        <v-card>
+          <v-card-title>
+            <v-flex xs2>
+              <v-text-field
+                v-model="search"
+                label="Search"
+                :append-icon="searchIcon"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-flex>
+          </v-card-title>
+          <v-data-table
+            :headers="headers"
+            :items="sortedParticipants"
+            :items-per-page="10"
+            :search="search"
+            no-data-text="Pas encore de rameurs !"
+            sort-by="distance"
+            :sort-desc="true"
+            class="elevation-1"
           >
-            {{ link.text }}
-          </a>
-        </v-layout>
-      </v-flex>
-
-      <v-flex
-        xs12
-        mb-5
-      >
-        <h2 class="headline font-weight-bold mb-3">Ecosystem</h2>
-
-        <v-layout justify-center>
-          <a
-            v-for="(eco, i) in ecosystem"
-            :key="i"
-            :href="eco.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ eco.text }}
-          </a>
-        </v-layout>
+            <template v-slot:item.action="{ item }">
+              <v-icon
+                small
+                @click="deleteRameur(item)"
+              >
+                 {{ deleteIcon }}
+              </v-icon>
+            </template>
+          </v-data-table>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+import FormRameur from './FormRameur';
+import { mdiDelete, mdiMagnify } from '@mdi/js';
+
 export default {
+  components: {
+    FormRameur
+  },
   data: () => ({
-    ecosystem: [
+    search: '',
+    deleteIcon: mdiDelete,
+    searchIcon: mdiMagnify,
+    headers: [
       {
-        text: 'vuetify-loader',
-        href: 'https://github.com/vuetifyjs/vuetify-loader',
+        text: 'Position',
+        align: 'left',
+        sortable: false,
+        value: 'position',
       },
-      {
-        text: 'github',
-        href: 'https://github.com/vuetifyjs/vuetify',
-      },
-      {
-        text: 'awesome-vuetify',
-        href: 'https://github.com/vuetifyjs/awesome-vuetify',
-      },
+      { text: 'Pseudo', align: 'center', sortable: false, value: 'pseudo' },
+      { text: 'Distance (m)', align: 'center', sortable: false, value: 'distance' },
+      { text: 'Actions', align: 'center', value: 'action', width: 20, sortable: false },
     ],
-    importantLinks: [
+    participants: [
       {
-        text: 'Documentation',
-        href: 'https://vuetifyjs.com',
+        pseudo: 'Fabien',
+        distance: 510
       },
       {
-        text: 'Chat',
-        href: 'https://community.vuetifyjs.com',
+        pseudo: 'Jean-Michel',
+        distance: 522
       },
       {
-        text: 'Made with Vuetify',
-        href: 'https://madewithvuejs.com/vuetify',
-      },
-      {
-        text: 'Twitter',
-        href: 'https://twitter.com/vuetifyjs',
-      },
-      {
-        text: 'Articles',
-        href: 'https://medium.com/vuetify',
-      },
-    ],
-    whatsNext: [
-      {
-        text: 'Explore components',
-        href: 'https://vuetifyjs.com/components/api-explorer',
-      },
-      {
-        text: 'Select a layout',
-        href: 'https://vuetifyjs.com/layout/pre-defined',
-      },
-      {
-        text: 'Frequently Asked Questions',
-        href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions',
-      },
-    ],
+        pseudo: 'Antoine',
+        distance: 490
+      }
+    ]
   }),
+  methods: {
+    addRameur(newRameur) {
+      this.participants.push(newRameur);
+    },
+    deleteRameur(rameur) {
+      this.participants.splice(rameur.position - 1, 1);
+    }
+  },
+  computed: {
+    sortedParticipants () {
+      function compare(a, b) {
+        if (a.distance > b.distance)
+          return -1;
+        if (a.distance < b.distance)
+          return 1;
+        return 0;
+      }
+
+      const sorted = this.participants.sort(compare);      
+      return sorted.map((item, index) => ({
+        position: index + 1,
+        ...item
+      }));
+    }
+  }
 };
 </script>

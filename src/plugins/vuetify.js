@@ -8,10 +8,10 @@ export default new Vuetify({
   theme: {
     themes: {
       light: {
-        primary: '#ee44aa',
+        primary: '#086ec7',
         secondary: '#424242',
         accent: '#82B1FF',
-        error: '#FF5252',
+        error: '#CC1424',
         info: '#2196F3',
         success: '#4CAF50',
         warning: '#FFC107'
@@ -19,6 +19,6 @@ export default new Vuetify({
     },
   },
   icons: {
-    iconfont: 'mdi',
+    iconfont: 'mdiSvg',
   },
 });

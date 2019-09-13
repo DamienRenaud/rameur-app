@@ -1,18 +1,24 @@
 <template>
   <v-app>
     <v-app-bar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        text
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
+      <v-flex xs3>
+        <v-img
+          :src="require('./assets/soprasteria.png')"
+          class="my-3"
+          contain
+          height="40"
+        ></v-img>
+      </v-flex>
+      <v-spacer />
+      <h1 class="headline font-weight-bold">Concours de rameur</h1>
+      <v-flex xs1>
+        <v-img
+          :src="require('./assets/mucoviscidose.png')"
+          class="my-3"
+          contain
+          height="100"
+        ></v-img>
+      </v-flex>
     </v-app-bar>
 
     <v-content>
