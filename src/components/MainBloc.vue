@@ -54,6 +54,8 @@
 <script>
 import FormRameur from './FormRameur';
 import { mdiDelete, mdiMagnify } from '@mdi/js';
+import axios from "axios";
+import { server } from "../config";
 
 export default {
   components: {
@@ -74,29 +76,24 @@ export default {
       { text: 'Distance (m)', align: 'center', sortable: false, value: 'distance' },
       { text: 'Actions', align: 'center', value: 'action', width: 20, sortable: false },
     ],
-    participants: [
-      {
-        name: 'Fabien',
-        distance: 510
-      },
-      {
-        name: 'Jean-Michel',
-        distance: 522
-      },
-      {
-        name: 'Antoine',
-        distance: 490
-      }
-    ]
+    participants: []
   }),
   methods: {
     addRameur(newRameur) {
-      this.participants.push(newRameur);
-      this.$emit('updateCagnotte', this.participants.length);
+      axios.post(`${server.baseURL}/rameur/create`, newRameur).then(() => {
+        this.getParticipants();
+      });
     },
     deleteRameur(rameur) {
-      this.participants.splice(rameur.position - 1, 1);
-      this.$emit('updateCagnotte', this.participants.length);
+      axios.delete(`${server.baseURL}/rameur/delete?rameurID=${rameur._id}`).then(() => {
+        this.getParticipants();
+      });
+    },
+    getParticipants() {
+      axios.get(`${server.baseURL}/rameur/rameurs`).then(response => {
+        this.participants = response.data;
+        this.$emit('updateCagnotte', this.participants.length);
+      });
     }
   },
   computed: {
@@ -117,7 +114,7 @@ export default {
     }
   },
   created() {
-    this.$emit('updateCagnotte', this.participants.length);
+    this.getParticipants();
   }
 };
 </script>

@@ -48,7 +48,6 @@
                         v-model="rameur.contact"
                         label="Contact (e-mail ou téléphone)"
                         :rules="contactRules"
-                        :counter="20"
                         required
                     ></v-text-field>
                 </v-col>
@@ -96,8 +95,7 @@ export default {
         v => v >= 0 || 'La distance ne peut pas être négative',
       ],
       contactRules: [
-        v => !!v || 'Merci de préciser un moyen de contact',
-        v => (v && v.length <= 20) || '20 caractères maximum',
+        v => !!v || 'Merci de préciser un moyen de contact'
       ]
   }),
   methods: {
