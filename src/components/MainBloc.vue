@@ -70,21 +70,21 @@ export default {
         sortable: false,
         value: 'position',
       },
-      { text: 'Pseudo', align: 'center', sortable: false, value: 'pseudo' },
+      { text: 'Rameur', align: 'center', sortable: false, value: 'name' },
       { text: 'Distance (m)', align: 'center', sortable: false, value: 'distance' },
       { text: 'Actions', align: 'center', value: 'action', width: 20, sortable: false },
     ],
     participants: [
       {
-        pseudo: 'Fabien',
+        name: 'Fabien',
         distance: 510
       },
       {
-        pseudo: 'Jean-Michel',
+        name: 'Jean-Michel',
         distance: 522
       },
       {
-        pseudo: 'Antoine',
+        name: 'Antoine',
         distance: 490
       }
     ]
@@ -92,9 +92,11 @@ export default {
   methods: {
     addRameur(newRameur) {
       this.participants.push(newRameur);
+      this.$emit('updateCagnotte', this.participants.length);
     },
     deleteRameur(rameur) {
       this.participants.splice(rameur.position - 1, 1);
+      this.$emit('updateCagnotte', this.participants.length);
     }
   },
   computed: {
@@ -107,12 +109,15 @@ export default {
         return 0;
       }
 
-      const sorted = this.participants.sort(compare);      
+      const sorted = this.participants.slice().sort(compare);      
       return sorted.map((item, index) => ({
         position: index + 1,
         ...item
       }));
     }
+  },
+  created() {
+    this.$emit('updateCagnotte', this.participants.length);
   }
 };
 </script>

@@ -19,10 +19,10 @@
                     md="4"
                 >
                     <v-text-field
-                        v-model="rameur.pseudo"
-                        label="Pseudo"
+                        v-model="rameur.name"
+                        label="Nom et prénom"
                         :rules="pseudoRules"
-                        :counter="15"
+                        :counter="30"
                         required
                     ></v-text-field>
                 </v-col>
@@ -83,13 +83,13 @@ export default {
   data: () => ({
       valid: false,
       rameur: {
-        pseudo: '',
+        name: '',
         distance: '',
         contact: ''
       },
       pseudoRules: [
         v => !!v || 'Merci de préciser un pseudo',
-        v => (v && v.length <= 15) || '15 caractères maximum',
+        v => (v && v.length <= 30) || '30 caractères maximum',
       ],
       distanceRules: [
         v => !!v || 'Merci de préciser la distance réalisée',
