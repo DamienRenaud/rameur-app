@@ -1,11 +1,24 @@
 <template>
   <v-container>
+
     <v-layout
       text-center
       wrap
       class="mt-5"
     >
-      <FormRameur v-on:newRameur="addRameur"/>
+      
+      <v-container>
+        <v-row justify="end">
+          <v-dialog v-model="dialog" max-width="600px">
+            <template v-slot:activator="{ on }">
+              <v-btn color="primary" dark v-on="on">Nouveau participant</v-btn>
+            </template>
+            <FormRameur 
+              @newRameur="addRameur" 
+              @change="dialog = $event"/>
+          </v-dialog>
+        </v-row>
+      </v-container>
 
       <v-flex
         mb-5
@@ -62,6 +75,7 @@ export default {
     FormRameur
   },
   data: () => ({
+    dialog: false,
     search: '',
     deleteIcon: mdiDelete,
     searchIcon: mdiMagnify,
