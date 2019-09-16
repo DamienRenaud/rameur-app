@@ -23,7 +23,7 @@
         </h1>
       </v-flex>
       <v-spacer />
-      <h1 class="headline font-weight-bold">Concours de rameur</h1>
+      <h1 class="headline font-weight-bold">Challenge solidaire</h1>
       <v-flex xs1>
         <v-img
           :src="require('./assets/mucoviscidose.png')"

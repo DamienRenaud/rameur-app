@@ -16,7 +16,7 @@
             <v-row>
                 <v-col
                     cols="12"
-                    md="4"
+                    md="3"
                 >
                     <v-text-field
                         v-model="rameur.name"
@@ -29,25 +29,35 @@
 
                 <v-col
                     cols="12"
-                    md="4"
+                    md="3"
                 >
                     <v-text-field
-                        v-model="rameur.distance"
-                        label="Distance réalisée (m)"
-                        type="number"
-                        :rules="distanceRules"
+                        v-model="rameur.school"
+                        label="Ecole"
+                    ></v-text-field>
+                </v-col>
+
+                <v-col
+                    cols="12"
+                    md="3"
+                >
+                    <v-text-field
+                        v-model="rameur.contact"
+                        label="Contact (e-mail ou téléphone)"
+                        :rules="contactRules"
                         required
                     ></v-text-field>
                 </v-col>
 
                 <v-col
                     cols="12"
-                    md="4"
+                    md="3"
                 >
                     <v-text-field
-                        v-model="rameur.contact"
-                        label="Contact (e-mail ou téléphone)"
-                        :rules="contactRules"
+                        v-model="rameur.distance"
+                        label="Distance réalisée (m)"
+                        type="number"
+                        :rules="distanceRules"
                         required
                     ></v-text-field>
                 </v-col>
@@ -83,8 +93,9 @@ export default {
       valid: false,
       rameur: {
         name: '',
-        distance: '',
-        contact: ''
+        school: '',
+        contact: '',
+        distance: ''
       },
       pseudoRules: [
         v => !!v || 'Merci de préciser un pseudo',
